@@ -9,6 +9,19 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+#Angular
+# Compiled output
+**/dist
+**/tmp
+**/out-tsc
+**/bazel-out
+
+# Node
+**/node_modules/**
+**/node/**
+**/npm-debug.log
+**/yarn-error.log
+
 ### STS ###
 .apt_generated
 .classpath
