@@ -6,3 +6,6 @@
 - https://www.devmedia.com.br/dominando-os-tipos-de-testes-automatizados/33867
 - https://cleancoders.com/blog/2022-02-09-has-your-mobile-app-team-fallen-into-the-ui-testing-trap
 - https://github.com/ryanluker/vscode-coverage-gutters
+- http://infinitest.github.io/
+- https://www.toptal.com/java/java-automation-testing-tutorial-2019
+- https://www.geeksforgeeks.org/assertion-in-selenium-webdriver-using-testng/?ref=rp
