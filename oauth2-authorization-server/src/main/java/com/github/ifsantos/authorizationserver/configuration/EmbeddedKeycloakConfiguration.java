@@ -12,7 +12,7 @@ import javax.naming.spi.NamingManager;
 import javax.sql.DataSource;
 
 import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
-import org.jboss.resteasy.plugins.server.servlet.ResteasyContextParameters;
+import static org.jboss.resteasy.plugins.server.servlet.ResteasyContextParameters;
 import org.keycloak.platform.Platform;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -26,30 +26,25 @@ import com.github.ifsantos.authorizationserver.filter.EmbeddedKeycloakRequestFil
 @Configuration
 public class EmbeddedKeycloakConfiguration {
   @Bean
-  ServletRegistrationBean keycloakJaxRsApplication(
-      KeycloakServerProperties keycloakServerProperties, DataSource dataSource) throws Exception {
-
+  ServletRegistrationBean keycloakJaxRsApplication(KeycloakServerProperties kcsProps, DataSource dataSource) throws Exception {
     mockJndiEnvironment(dataSource);
-    EmbeddedKeycloakApplication.keycloakServerProperties = keycloakServerProperties;
+    EmbeddedKeycloakApplication.keycloakServerProperties = kcsProps;
     ServletRegistrationBean servlet = new ServletRegistrationBean<>(new HttpServlet30Dispatcher());
     servlet.addInitParameter("javax.ws.rs.Application", EmbeddedKeycloakApplication.class.getName());
-    servlet.addInitParameter(ResteasyContextParameters.RESTEASY_SERVLET_MAPPING_PREFIX,
-        keycloakServerProperties.getContextPath());
-    servlet.addInitParameter(ResteasyContextParameters.RESTEASY_USE_CONTAINER_FORM_PARAMS,
-        "true");
-    servlet.addUrlMappings(keycloakServerProperties.getContextPath() + "/*");
+    servlet.addInitParameter(RESTEASY_SERVLET_MAPPING_PREFIX, kcsProps.getContextPath());
+    servlet.addInitParameter(RESTEASY_USE_CONTAINER_FORM_PARAMS, "true");
+    servlet.addUrlMappings(kcsProps.getContextPath() + "/*");
     servlet.setLoadOnStartup(1);
     servlet.setAsyncSupported(true);
     return servlet;
   }
 
   @Bean
-  FilterRegistrationBean keycloakSessionManagement(
-      KeycloakServerProperties keycloakServerProperties) {
+  FilterRegistrationBean keycloakSessionManagement(KeycloakServerProperties kcsProps) {
     FilterRegistrationBean filter = new FilterRegistrationBean<>();
     filter.setName("Keycloak Session Management");
     filter.setFilter(new EmbeddedKeycloakRequestFilter());
-    filter.addUrlPatterns(keycloakServerProperties.getContextPath() + "/*");
+    filter.addUrlPatterns(kcsProps.getContextPath() + "/*");
 
     return filter;
   }
