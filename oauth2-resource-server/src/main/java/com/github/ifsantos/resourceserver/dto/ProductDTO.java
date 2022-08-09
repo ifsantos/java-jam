@@ -1,12 +1,16 @@
 package com.github.ifsantos.resourceserver.dto;
 
-public class UserDTO {
+import java.math.BigDecimal;
+
+public class ProductDTO {
     public Long id;
     public String name;
+    public BigDecimal price;
     
-    public UserDTO(Long id, String name) {
+    public ProductDTO(Long id, String name, BigDecimal price) {
         this.id = id;
         this.name = name;
+        this.price = price;
     }
     public Long getId() {
         return id;
@@ -19,6 +23,12 @@ public class UserDTO {
     }
     public void setName(String name) {
         this.name = name;
+    }
+    public BigDecimal getPrice() {
+        return price;
+    }
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
     
 }

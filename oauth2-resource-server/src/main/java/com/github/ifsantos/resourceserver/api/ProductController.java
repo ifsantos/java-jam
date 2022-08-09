@@ -13,48 +13,49 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.github.ifsantos.resourceserver.dto.UserDTO;
-import com.github.ifsantos.resourceserver.model.User;
-import com.github.ifsantos.resourceserver.service.IUserService;
+import com.github.ifsantos.resourceserver.dto.ProductDTO;
+import com.github.ifsantos.resourceserver.model.Product;
+import com.github.ifsantos.resourceserver.service.IProductService;
 
 
 
 @RestController
-@RequestMapping("api/user")
-public class UserController {
+@RequestMapping("api/product")
+public class ProductController {
     
-    private IUserService svc;
+    private IProductService svc;
 
-    public UserController(IUserService svc) {
+    public ProductController(IProductService svc) {
         this.svc = svc;
     }
 
     @GetMapping(value="/{id}")
-    public UserDTO getUser(@PathVariable("{id}") Long id) {
-        User user = svc.findById(id)
+    public ProductDTO getProduct(@PathVariable("{id}") Long id) {
+        Product product = svc.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return toDTO(user);
+        return toDTO(product);
     }
     
     @PostMapping
-    public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO user) {
-        User entity = svc.save(toEntity(user));
+    public ResponseEntity<ProductDTO> saveProduct(@RequestBody ProductDTO Product) {
+        Product entity = svc.save(toEntity(Product));
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(entity));
     }
     
+  
     @GetMapping
-    public Iterable<UserDTO> listUser() {
+    public Iterable<ProductDTO> listProduct() {
         return StreamSupport
             .stream(svc.list().spliterator(),false)
             .map(this::toDTO)
             .collect(toList());
     }
     
-    public UserDTO toDTO(User u){
-        return new UserDTO(u.getID(), u.getName());
+    public ProductDTO toDTO(Product u){
+        return new ProductDTO(u.getID(), u.getName(), u.getPrice());
     }
-    public User toEntity(UserDTO u){
-        return new User(u.getId(), u.getName());
+    public Product toEntity(ProductDTO u){
+        return new Product(u.getId(), u.getName(), u.getPrice());
     }
 
 }
